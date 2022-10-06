@@ -15,9 +15,9 @@ namespace OdeToFood.Controllers
         public IActionResult Search(string name = "unknown")
         {
             var message = HtmlEncoder.Default.Encode(name);
-            throw new Exception("Something terrible has happened");
+            //throw new Exception("Something terrible has happened");
 
-            //return Content(message);
+            return Content(message);
             //return Content(message);
             //return new EmptyResult();
             //return File("/css/site.css", "text/css")

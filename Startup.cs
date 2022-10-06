@@ -71,7 +71,7 @@ namespace OdeToFood
                 endpoints.MapControllerRoute(
                     name: "cuisine",
                     pattern: "cuisine/{name?}",
-                    defaults: new { controller = "Cuisine", action = "Search", name = "" });
+                    defaults: new { controller = "Cuisine", action = "Search" });
                 endpoints.MapRazorPages();
             });
         }
