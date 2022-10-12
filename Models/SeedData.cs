@@ -32,13 +32,6 @@ namespace OdeToFood.Models
 
                     new Restaurant
                     {
-                        Name = "Spongebobs cookout",
-                        Country = "USA",
-                        City = "Florida"
-                    },
-
-                    new Restaurant
-                    {
                         Name = "THK Söökla",
                         Country = "USA",
                         City = "Florida"
@@ -48,9 +41,12 @@ namespace OdeToFood.Models
                     {
                         Name = "Hesburger",
                         Country = "USA",
-                        City = "Florida"
+                        City = "Florida",
+                        Reviews =
+                            new List<RestaurantReview> {
+                            new RestaurantReview { Rating = 9, Body="Great bulking food!"}
                     }
-                );
+                });
                 context.SaveChanges();
             }
         }
