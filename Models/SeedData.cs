@@ -33,15 +33,15 @@ namespace OdeToFood.Models
                     new Restaurant
                     {
                         Name = "THK Söökla",
-                        Country = "USA",
-                        City = "Florida"
+                        Country = "Eesti",
+                        City = "Tallinn"
                     },
 
                     new Restaurant
                     {
                         Name = "Hesburger",
-                        Country = "USA",
-                        City = "Florida",
+                        Country = "Mars",
+                        City = "Mars crevise",
                         Reviews =
                             new List<RestaurantReview> {
                             new RestaurantReview { Rating = 9, Body="Great bulking food!"}
