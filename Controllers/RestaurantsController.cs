@@ -86,9 +86,9 @@ namespace OdeToFood.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City,Country")] Restaurant restaurant)
+        public async Task<IActionResult> Edit(int id, RestaurantReviewEditViewModel review)
         {
-            if (id != restaurant.Id)
+            if (id != review.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,16 @@ namespace OdeToFood.Controllers
             {
                 try
                 {
-                    _context.Update(restaurant);
+                    var currentReview = await _context.RestaurantReviews.FindAsync(id);
+                    currentReview.Body = review.Body;
+                    currentReview.Rating = review.Rating;
+                    _context.Entry(currentReview).State = EntityState.Modified;
+                    //_context.Update(review);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RestaurantExists(restaurant.Id))
+                    if (!RestaurantExists(review.Id))
                     {
                         return NotFound();
                     }
@@ -113,7 +117,7 @@ namespace OdeToFood.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(restaurant);
+            return View(review);
         }
 
         // GET: Restaurants/Delete/5

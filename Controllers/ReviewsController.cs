@@ -48,6 +48,56 @@ namespace OdeToFood.Controllers
             }
             return View(review);
         }
-        
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var review = await _context.RestaurantReviews.FindAsync(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return View(review);
+        }
+
+        // POST: Restaurants/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City,Country")] RestaurantReview review)
+        {
+            if (id != review.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(review);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.RestaurantReviews.Any(r=>r.Id == id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index), new { id = review.RestaurantId });
+            }
+            return View(review);
+        }
+
     }
 }
