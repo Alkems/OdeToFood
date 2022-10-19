@@ -6,13 +6,13 @@
 
 <h1>Create</h1>
 
-<h4>RestaurantReview</h4>
+<h4>New Review</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <input asp-for="RestaurantId" type="hidden" />
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Rating" class="control-label"></label>
                 <input asp-for="Rating" class="form-control" />
@@ -36,8 +36,7 @@
 </div>
 
 <div>
-    <a asp-action="Index" asp-route-id="@Context.Request.Query
-       ["restaurantId"]">Back</a>
+    <a asp-action="Index" asp-route-id="@Context.Request.Query["restaurantId"]">Back</a>
 </div>
 
 @section Scripts {
