@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OdeToFood.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<OdeToFoodUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
