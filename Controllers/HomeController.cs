@@ -37,7 +37,7 @@ namespace OdeToFood.Controllers
                     CountOfReviews = r.Reviews.Count()
                 }
                 ).ToPagedList(page, 10);
-
+            if (Request.IsAjaxRequest())
             {
                 return PartialView("_Restaurants", model);
             }
