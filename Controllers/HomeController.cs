@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCore.Unobtrusive.Ajax;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OdeToFood.Data;
 using OdeToFood.Models;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace OdeToFood.Controllers
 {
@@ -21,12 +23,11 @@ namespace OdeToFood.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(string searchTerm = null)
+        public IActionResult Index(string searchTerm = null, int page = 1)
         {
             var model = _db.Restaurants
                 .OrderByDescending(r => r.Reviews.Average(review => review.Rating))
                 .Where(r => searchTerm == null || r.Name.StartsWith(searchTerm))
-                .Take(10)
                 .Select(r => new RestaurantListViewModel
                 {
                     Id = r.Id,
@@ -35,19 +36,8 @@ namespace OdeToFood.Controllers
                     Country = r.Country,
                     CountOfReviews = r.Reviews.Count()
                 }
-                );
+                ).ToPagedList(page, 10);
 
-            //var model = from r in _db.Restaurants
-            //												orderby r.Reviews.Average(review => review.Rating)
-            //												select new RestaurantListViewModel
-            //												{
-            //													Id = r.Id,
-            //													Name = r.Name,
-            //													City = r.City,
-            //													Country = r.Country,
-            //													CountOfReviews = r.Reviews.Count()
-            //												};
-            if (Request.IsAjaxRequest())
             {
                 return PartialView("_Restaurants", model);
             }
