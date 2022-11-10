@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using OdeToFood.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OdeToFood.Models;
 
@@ -14,13 +15,16 @@ namespace OdeToFood.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<OdeToFoodUser> _userManager;
         private readonly SignInManager<OdeToFoodUser> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public IndexModel(
             UserManager<OdeToFoodUser> userManager,
-            SignInManager<OdeToFoodUser> signInManager)
+            SignInManager<OdeToFoodUser> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         public string Username { get; set; }
@@ -51,7 +55,8 @@ namespace OdeToFood.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FavouriteRestaurant = user.FavoriteRestaurant
             };
         }
 
@@ -90,6 +95,12 @@ namespace OdeToFood.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+            if (Input.FavouriteRestaurant != user.FavoriteRestaurant)
+            {
+                user.FavoriteRestaurant = Input.FavouriteRestaurant;
+                _context.Update(user);
+                await _context.SaveChangesAsync();
             }
 
             await _signInManager.RefreshSignInAsync(user);

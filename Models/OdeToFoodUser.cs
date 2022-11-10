@@ -10,6 +10,6 @@ namespace OdeToFood.Models
     public class OdeToFoodUser : IdentityUser
     {
         [StringLength(1024)]
-        public string FavouriteRestaurant { get; set; }
+        public string FavoriteRestaurant { get; set; }
     }
 }

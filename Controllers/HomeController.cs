@@ -6,12 +6,14 @@ using OdeToFood.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
 using X.PagedList;
 
 namespace OdeToFood.Controllers
 {
+    [Authorize(Roles = "administrators,sales")]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -23,6 +25,16 @@ namespace OdeToFood.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
+        public IActionResult Autocomplete(string term)
+        {
+            var model = _db.Restaurants
+                .Where(r => r.Name.StartsWith(term))
+                .Take(10)
+                .Select(r => new { label = r.Name });
+            return Json(model);
+        }
+        [AllowAnonymous]
         public IActionResult Index(string searchTerm = null, int page = 1)
         {
             var model = _db.Restaurants
